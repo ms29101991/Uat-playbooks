@@ -1,6 +1,6 @@
 ---
 - name: Ping all servers
-  hosts: all_servers
+  hosts: all
   gather_facts: no
   tasks:
     - name: Ping the servers
