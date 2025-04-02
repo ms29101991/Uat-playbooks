@@ -1,0 +1,7 @@
+- name: Gather Ansible Facts
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Display all gathered facts
+      ansible.builtin.debug:
+        var: ansible_facts
