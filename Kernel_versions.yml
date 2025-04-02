@@ -10,3 +10,6 @@
     - name: Display Kernel Version
       ansible.builtin.debug:
         msg: "Kernel Version: {{ kernel_output.stdout }}"
+  vars:
+    ansible_become: yes
+    ansible_become_method: sudo
