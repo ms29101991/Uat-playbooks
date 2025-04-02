@@ -1,0 +1,11 @@
+- name: Check Kernel Version
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Get Kernel Version
+      ansible.builtin.command: uname -r
+      register: kernel_output
+
+    - name: Display Kernel Version
+      ansible.builtin.debug:
+        msg: "Kernel Version: {{ kernel_output.stdout }}"
