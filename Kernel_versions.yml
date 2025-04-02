@@ -1,6 +1,7 @@
 - name: Check Kernel Version
   hosts: all
   gather_facts: yes
+  become: true
   tasks:
     - name: Get Kernel Version
       ansible.builtin.command: uname -r
