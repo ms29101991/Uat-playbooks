@@ -14,7 +14,7 @@
 
     - name: Check Memory Usage
       ansible.builtin.shell: |
-          free -m | awk "NR==2{printf \"Memory Usage: %s/%sMB (%.2f%%)\", $3,$2,$3*100/$2 }"
+        free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3, $2, $3*100/$2 }'
       register: mem_usage
 
     - name: Check Disk Space
