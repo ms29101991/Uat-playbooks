@@ -12,11 +12,6 @@
       ansible.builtin.command: uptime
       register: cpu_load
 
-    - name: Check Memory Usage
-      ansible.builtin.shell: |
-          free -m | awk "NR==2{printf \"Memory Usage: %s/%sMB (%.2f%%)\", $3,$2,$3*100/$2 }"
-      register: mem_usage
-
     - name: Check Disk Space
       ansible.builtin.shell: |
           df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)", $3,$2,$5}'
@@ -32,7 +27,6 @@
         msg:
           - "🖥️  Host: {{ inventory_hostname }}"
           - "⏳ Uptime: {{ uptime_result.stdout }}"
-          - "💾 {{ mem_usage.stdout }}"
           - "📀 {{ disk_usage.stdout }}"
           - "🔥 CPU Load: {{ cpu_load.stdout_lines[0] }}"
           - "🔍 SSH Service: {{ 'Running' if ssh_status.status.ActiveState == 'active' else 'Stopped' }}"
