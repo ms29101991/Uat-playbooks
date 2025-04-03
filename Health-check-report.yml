@@ -13,11 +13,13 @@
       register: cpu_load
 
     - name: Check Memory Usage
-      ansible.builtin.shell: free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)", $3,$2,$3*100/$2 }'
+      ansible.builtin.shell: |
+          free -m | awk "NR==2{printf \"Memory Usage: %s/%sMB (%.2f%%)\", $3,$2,$3*100/$2 }"
       register: mem_usage
 
     - name: Check Disk Space
-      ansible.builtin.shell: df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)", $3,$2,$5}'
+      ansible.builtin.shell: |
+          df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)", $3,$2,$5}'
       register: disk_usage
 
     - name: Check Running Services
