@@ -1,19 +1,16 @@
-- name: Check N-able Agent Status
+- name: Check nagent service status
   hosts: all
   become: true
   gather_facts: no
 
   tasks:
-    - name: Check if N-able Agent service is present
+    - name: Check if nagent service exists
       ansible.builtin.shell: |
-        if systemctl list-units --type=service | grep -q ncentralagent; then
-          systemctl status ncentralagent
-        else
-          echo "N-able Agent service not found"
-        fi
-      register: nable_status
+        systemctl status nagent.service
+      register: nagent_status
       changed_when: false
+      failed_when: "'Active: active (running)' not in nagent_status.stdout"
 
-    - name: Print N-able Agent service status
+    - name: Display nagent service full status
       ansible.builtin.debug:
-        var: nable_status.stdout
+        var: nagent_status.stdout_lines
