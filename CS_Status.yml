@@ -1,0 +1,19 @@
+- name: Check Falcon Sensor Status
+  hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+    - name: Check if Falcon sensor service is running (Linux)
+      ansible.builtin.shell: |
+        if systemctl list-units --type=service | grep -q falcon-sensor; then
+          systemctl status falcon-sensor
+        else
+          echo "Falcon sensor service not found"
+        fi
+      register: falcon_status
+      changed_when: false
+
+    - name: Print Falcon sensor status
+      ansible.builtin.debug:
+        var: falcon_status.stdout
