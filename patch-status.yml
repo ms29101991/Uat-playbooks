@@ -1,0 +1,32 @@
+---
+- name: Check patch status on Oracle Linux 7 and 8
+  hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+
+    - name: Determine package manager based on OS version
+      set_fact:
+        pkg_mgr: "{{ 'yum' if ansible_distribution_major_version | int == 7 else 'dnf' }}"
+
+    - name: Check for available updates
+      shell: "{{ pkg_mgr }} check-update || true"
+      register: patch_check_output
+      changed_when: false
+
+    - name: Show available updates
+      debug:
+        msg: |
+          Updates available on {{ inventory_hostname }}:
+          {{ patch_check_output.stdout_lines | default(['No updates available']) }}
+
+    - name: Count number of packages with updates
+      set_fact:
+        update_count: "{{ patch_check_output.stdout_lines | select('match', '^[a-zA-Z0-9_.-]+\\s+') | list | length }}"
+
+    - name: Display patch summary
+      debug:
+        msg: >
+          {{ inventory_hostname }} has {{ update_count }} packages pending update.
+
