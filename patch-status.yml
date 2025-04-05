@@ -2,7 +2,7 @@
 - name: Check patch status on Oracle Linux 7 and 8
   hosts: all
   become: true
-  gather_facts: no
+  gather_facts: yes
 
   tasks:
 
